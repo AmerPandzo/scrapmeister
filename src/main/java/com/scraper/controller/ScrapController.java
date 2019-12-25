@@ -16,9 +16,9 @@ public class ScrapController {
 
   @GetMapping("/scrap")
   @ResponseBody
-  public void scrap() throws IOException {
+  public String scrap() throws IOException {
     System.out.println("Amer test");
-    webScraperService.scrapAndSave();
+    return webScraperService.scrapAndSave();
   }
 
 }

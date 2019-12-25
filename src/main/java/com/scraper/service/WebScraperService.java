@@ -26,17 +26,19 @@ public class WebScraperService {
     this.feedEntryService = feedEntryService;
   }
 
-  public void scrapAndSave() throws IOException {
+  public String scrapAndSave() throws IOException {
     List<TargetWebsite> websites = targetWebsiteService.findAll();
+    System.out.println("number of websites scraped: " + websites.size());
     entriesCleanup();
     processWebsitesScrapping(websites);
-    //log.info("Total: " + websites.size() + " websites scrapped.");
+    return "Websites scraped: " + websites.size();
   }
 
   private void processWebsitesScrapping(List<TargetWebsite> websites) throws IOException {
     for (TargetWebsite website : websites) {
       Document doc = Jsoup.connect(website.getUrl()).get();
       String websiteTitle = doc.title();
+      System.out.println(websiteTitle);
       Elements elements = doc.select(website.getEntryParseRule().getNewsContainer());
       elements.forEach(element -> saveEntry(element, website, websiteTitle));
       //log.info("Scrapped website: " + websiteTitle + ". " + elements.size() + " entries added to feed.");
@@ -49,7 +51,10 @@ public class WebScraperService {
 
   private FeedEntry saveEntry(Element element, TargetWebsite website, String websiteTitle) {
     EntryParseRule rule = website.getEntryParseRule();
-    String imageUrl = element.select("img").first().absUrl("src");
+    String imageUrl = "no image";
+   if(element.select("img").first() != null) {
+       imageUrl = element.select("img").first().absUrl("src");
+   }
     return feedEntryService.save(
         FeedEntry.FeedEntryBuilder.aFeedEntry()
             .setAuthor(websiteTitle)

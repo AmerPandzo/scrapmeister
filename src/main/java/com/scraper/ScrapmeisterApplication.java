@@ -8,7 +8,7 @@ public class ScrapmeisterApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(ScrapmeisterApplication.class, args);
-    System.out.println("test");
+    System.out.println("running");
   }
-
 }
+
