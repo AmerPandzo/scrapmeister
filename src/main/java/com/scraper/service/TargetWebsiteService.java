@@ -21,4 +21,8 @@ public class TargetWebsiteService {
     return targetWebsiteRepository.findAll();
   }
 
+  public TargetWebsite create(TargetWebsite targetWebsite) {
+    return targetWebsiteRepository.save(targetWebsite);
+  }
+
 }

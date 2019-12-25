@@ -1,5 +1,6 @@
 package com.scraper.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ public class EntryParseRule {
   private String title;
   private String content;
   private String link;
+  private LocalDateTime cratedAt;
 
   public Long getId() {
     return id;
@@ -53,5 +55,13 @@ public class EntryParseRule {
 
   public void setLink(String link) {
     this.link = link;
+  }
+
+  public LocalDateTime getCratedAt() {
+    return cratedAt;
+  }
+
+  public void setCratedAt(LocalDateTime cratedAt) {
+    this.cratedAt = cratedAt;
   }
 }

@@ -1,5 +1,6 @@
 package com.scraper.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class FeedEntry {
   private String content;
   private String url;
   private String imageUrl;
+  private LocalDateTime cratedAt;
   @ManyToOne
   @JoinColumn(name = "target_website_id")
   private TargetWebsite targetWebsite;
@@ -79,6 +81,14 @@ public class FeedEntry {
     this.targetWebsite = targetWebsite;
   }
 
+  public LocalDateTime getCratedAt() {
+    return cratedAt;
+  }
+
+  public void setCratedAt(LocalDateTime cratedAt) {
+    this.cratedAt = cratedAt;
+  }
+
   public static final class FeedEntryBuilder {
     private Long id;
     private String title;
@@ -87,6 +97,7 @@ public class FeedEntry {
     private String url;
     private String imageUrl;
     private TargetWebsite targetWebsite;
+    private LocalDateTime createdAt;
 
     private FeedEntryBuilder() {
     }
@@ -130,6 +141,11 @@ public class FeedEntry {
       return this;
     }
 
+    public FeedEntryBuilder setCratedAt(LocalDateTime cratedAt) {
+      this.createdAt = cratedAt;
+      return this;
+    }
+
     public FeedEntry build() {
       FeedEntry feedEntry = new FeedEntry();
       feedEntry.setId(id);
@@ -139,6 +155,7 @@ public class FeedEntry {
       feedEntry.setUrl(url);
       feedEntry.setImageUrl(imageUrl);
       feedEntry.setTargetWebsite(targetWebsite);
+      feedEntry.setCratedAt(createdAt);
       return feedEntry;
     }
   }

@@ -1,5 +1,6 @@
 package com.scraper.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +16,7 @@ public class TargetWebsite {
   @GeneratedValue
   private Long id;
   private String url;
+  private LocalDateTime createdAt;
 
   @OneToOne
   private EntryParseRule entryParseRule;
@@ -41,5 +43,13 @@ public class TargetWebsite {
 
   public void setEntryParseRule(EntryParseRule entryParseRule) {
     this.entryParseRule = entryParseRule;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 }
