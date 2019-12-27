@@ -5,6 +5,7 @@ import com.scraper.domain.TargetWebsite;
 import com.scraper.service.EntryParseRuleService;
 import com.scraper.service.TargetWebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ public class TargetWebsiteController {
     this.entryParseRuleService = entryParseRuleService;
   }
 
+  @CrossOrigin(origins = {"http://localhost:4200", "https://scrapmeister-frontend.herokuapp.com"})
   @PostMapping("/targetWebsites")
   @ResponseBody
   public TargetWebsite create(@RequestBody @Valid final TargetWebsite targetWebsite) throws IOException {
@@ -44,12 +46,14 @@ public class TargetWebsiteController {
     return targetWebsiteService.create(targetWebsite);
   }
 
+  @CrossOrigin(origins = {"http://localhost:4200", "https://scrapmeister-frontend.herokuapp.com"})
   @GetMapping("/targetWebsites")
   public List<TargetWebsite> findAll() throws IOException {
     System.out.println("Getting all target websites.");
     return targetWebsiteService.findAll();
   }
 
+  @CrossOrigin(origins = {"http://localhost:4200", "https://scrapmeister-frontend.herokuapp.com"})
   @GetMapping("/targetWebsites/{id}")
   public Optional<TargetWebsite> findById(@PathVariable Long id) throws IOException {
     System.out.println("Getting target website.");
