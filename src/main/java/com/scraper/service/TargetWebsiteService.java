@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TargetWebsiteService {
@@ -19,6 +20,10 @@ public class TargetWebsiteService {
 
   public List<TargetWebsite> findAll() {
     return targetWebsiteRepository.findAll();
+  }
+
+  public Optional<TargetWebsite> findById(Long id) {
+    return targetWebsiteRepository.findById(id);
   }
 
   public TargetWebsite create(TargetWebsite targetWebsite) {
