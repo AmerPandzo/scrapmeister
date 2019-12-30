@@ -26,6 +26,10 @@ public class TargetWebsiteService {
     return targetWebsiteRepository.findById(id);
   }
 
+  public void deleteById(Long id) {
+    targetWebsiteRepository.deleteById(id);
+  }
+
   public TargetWebsite create(TargetWebsite targetWebsite) {
     return targetWebsiteRepository.save(targetWebsite);
   }
