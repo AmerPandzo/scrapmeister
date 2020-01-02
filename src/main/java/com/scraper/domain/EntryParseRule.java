@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class EntryParseRule {
@@ -16,6 +17,9 @@ public class EntryParseRule {
   private String content;
   private String link;
   private LocalDateTime cratedAt;
+
+  @OneToOne(mappedBy = "entryParseRule")
+  private TargetWebsite targetWebsite;
 
   public Long getId() {
     return id;

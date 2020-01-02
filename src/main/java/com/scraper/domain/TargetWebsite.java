@@ -1,9 +1,11 @@
 package com.scraper.domain;
 
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
@@ -18,7 +20,8 @@ public class TargetWebsite {
   private String url;
   private LocalDateTime createdAt;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "entry_parse_rule_id", referencedColumnName = "id")
   private EntryParseRule entryParseRule;
 
   public Long getId() {
