@@ -3,6 +3,7 @@ package com.scraper.controller;
 import com.scraper.domain.EntryParseRule;
 import com.scraper.domain.TargetWebsite;
 import com.scraper.service.EntryParseRuleService;
+import com.scraper.service.FeedEntryService;
 import com.scraper.service.TargetWebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
@@ -26,11 +28,15 @@ public class TargetWebsiteController {
 
   private EntryParseRuleService entryParseRuleService;
 
+  private FeedEntryService feedEntryService;
+
   @Autowired
   public TargetWebsiteController(TargetWebsiteService targetWebsiteService,
-      EntryParseRuleService entryParseRuleService) {
+      EntryParseRuleService entryParseRuleService,
+      FeedEntryService feedEntryService) {
     this.targetWebsiteService = targetWebsiteService;
     this.entryParseRuleService = entryParseRuleService;
+    this.feedEntryService = feedEntryService;
   }
 
   @PostMapping("/targetWebsites")
@@ -60,6 +66,14 @@ public class TargetWebsiteController {
   @DeleteMapping("/targetWebsites/{id}")
   public void deleteById(@PathVariable Long id) throws IOException {
     System.out.println("Deleting target website.");
+    targetWebsiteService.deleteById(id);
+  }
+
+  @Transactional
+  @DeleteMapping("/targetWebsites/{id}/feeds")
+  public void deleteAllById(@PathVariable Long id) throws IOException {
+    System.out.println("Deleting target website.");
+    feedEntryService.deleteAllByTargetWebsiteId(id);
     targetWebsiteService.deleteById(id);
   }
 }

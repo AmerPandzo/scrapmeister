@@ -25,6 +25,10 @@ public class FeedEntryService {
     return feedEntryRepository.findAllByTargetWebsiteId(targetWebsiteId);
   }
 
+  public void deleteAllByTargetWebsiteId(Long targetWebsiteId) {
+    feedEntryRepository.deleteAllByTargetWebsiteId(targetWebsiteId);
+  }
+
   public void deleteAll() {
     feedEntryRepository.deleteAll();
   }

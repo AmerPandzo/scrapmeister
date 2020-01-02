@@ -9,4 +9,6 @@ public interface FeedEntryRepository extends JpaRepository<FeedEntry, Long> {
   List<FeedEntry> findAllByTargetWebsiteId(Long targetWebsiteId);
 
   List<FeedEntry> findAll();
+
+  void deleteAllByTargetWebsiteId(Long targetWebsiteId);
 }
