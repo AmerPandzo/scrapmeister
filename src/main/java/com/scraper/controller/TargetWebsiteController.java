@@ -1,6 +1,7 @@
 package com.scraper.controller;
 
 import com.scraper.domain.EntryParseRule;
+import com.scraper.domain.FeedEntry;
 import com.scraper.domain.TargetWebsite;
 import com.scraper.service.EntryParseRuleService;
 import com.scraper.service.FeedEntryService;
@@ -69,9 +70,15 @@ public class TargetWebsiteController {
   }
 
   @DeleteMapping("/targetWebsites/{id}/feeds")
-  public void deleteAllById(@PathVariable Long id) throws IOException {
+  public void deleteAllFeedsById(@PathVariable Long id) throws IOException {
     System.out.println("Deleting target website.");
     feedEntryService.deleteAllByTargetWebsiteId(id);
     targetWebsiteService.deleteById(id);
+  }
+
+  @GetMapping("/targetWebsites/{id}/feeds")
+  public List<FeedEntry> getFeedsById(@PathVariable Long id) {
+    System.out.println("Getting feeds by website.");
+    return feedEntryService.findAllByTargetWebsiteId(id);
   }
 }
