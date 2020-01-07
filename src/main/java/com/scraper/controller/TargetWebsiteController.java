@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
@@ -69,7 +68,6 @@ public class TargetWebsiteController {
     targetWebsiteService.deleteById(id);
   }
 
-  @Transactional
   @DeleteMapping("/targetWebsites/{id}/feeds")
   public void deleteAllById(@PathVariable Long id) throws IOException {
     System.out.println("Deleting target website.");

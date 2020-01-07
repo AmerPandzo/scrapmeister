@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
+@Transactional
 public class TargetWebsiteService {
 
   private TargetWebsiteRepository targetWebsiteRepository;

@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class WebScraperService {
 
   private TargetWebsiteService targetWebsiteService;
@@ -29,7 +31,6 @@ public class WebScraperService {
     this.feedEntryService = feedEntryService;
   }
 
-  @Transactional
   public List<FeedEntry> scrapOneAndSave(Long id) throws IOException, NotFoundException {
     Optional<TargetWebsite> maybeWebsite = targetWebsiteService.findById(id);
     if(!maybeWebsite.isPresent()) {
@@ -90,6 +91,7 @@ public class WebScraperService {
             .setUrl(element.select(rule.getLink()).attr("abs:href"))
             .setImageUrl(imageUrl)
             .setTargetWebsite(website)
+            .setCratedAt(LocalDateTime.now())
             .build());
   }
 
