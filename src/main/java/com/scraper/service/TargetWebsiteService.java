@@ -1,7 +1,9 @@
 package com.scraper.service;
 
+import com.scraper.domain.EntryParseRule;
 import com.scraper.domain.TargetWebsite;
 import com.scraper.repository.TargetWebsiteRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,15 @@ public class TargetWebsiteService {
   }
 
   public TargetWebsite create(TargetWebsite targetWebsite) {
+    return targetWebsiteRepository.save(targetWebsite);
+  }
+
+  public TargetWebsite update(TargetWebsite newTargetWebsite) throws NotFoundException {
+    Optional<TargetWebsite> maybeTargetWebsite = targetWebsiteRepository.findById(newTargetWebsite.getId());
+    if(!maybeTargetWebsite.isPresent()) throw new NotFoundException("TargetWebsite not found.");
+    final TargetWebsite targetWebsite = maybeTargetWebsite.get();
+    targetWebsite.setUrl(newTargetWebsite.getUrl());
+    targetWebsite.setEntryParseRule(newTargetWebsite.getEntryParseRule());
     return targetWebsiteRepository.save(targetWebsite);
   }
 

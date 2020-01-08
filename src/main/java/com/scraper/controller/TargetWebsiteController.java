@@ -6,11 +6,13 @@ import com.scraper.domain.TargetWebsite;
 import com.scraper.service.EntryParseRuleService;
 import com.scraper.service.FeedEntryService;
 import com.scraper.service.TargetWebsiteService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,6 +51,15 @@ public class TargetWebsiteController {
     entryParseRuleService.create(entryParseRule);
     targetWebsite.setCreatedAt(cratedAt);
     return targetWebsiteService.create(targetWebsite);
+  }
+
+  @PutMapping("/targetWebsites/update")
+  @ResponseBody
+  public TargetWebsite update(@RequestBody @Valid final TargetWebsite targetWebsite) throws NotFoundException {
+    System.out.println("Updating target website.");
+    EntryParseRule entryParseRule = targetWebsite.getEntryParseRule();
+    entryParseRuleService.update(entryParseRule);
+    return targetWebsiteService.update(targetWebsite);
   }
 
   @GetMapping("/targetWebsites")
