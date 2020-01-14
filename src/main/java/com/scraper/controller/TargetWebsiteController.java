@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,9 +64,22 @@ public class TargetWebsiteController {
   }
 
   @GetMapping("/targetWebsites")
-  public List<TargetWebsite> findAll() throws IOException {
-    System.out.println("Getting all target websites.");
-    return targetWebsiteService.findAll();
+  public List<TargetWebsite> findAll(@RequestParam Optional<List<Long>> ids) throws IOException {
+    List<TargetWebsite> targetWebsites;
+    if (!ids.isPresent()) {
+      System.out.println("Getting all target websites.");
+      targetWebsites = targetWebsiteService.findAll();
+    } else {
+      System.out.println("Getting all target websites by list of ids.");
+      targetWebsites = targetWebsiteService.findAllByIds(ids.get());
+    }
+    return targetWebsites;
+  }
+
+  @GetMapping("/targetWebsites/byIds")
+  public List<TargetWebsite> findAllByIds(@RequestParam List<Long> ids) throws IOException {
+    System.out.println("Getting all target websites by list of ids.");
+    return targetWebsiteService.findAllByIds(ids);
   }
 
   @GetMapping("/targetWebsites/{id}")
@@ -88,7 +102,8 @@ public class TargetWebsiteController {
   }
 
   @GetMapping("/targetWebsites/{targetWebsiteId}/feed/{id}")
-  public Optional<FeedEntry> getByIdAndTargetWebsiteId(@PathVariable Long id, @PathVariable Long targetWebsiteId) throws IOException {
+  public Optional<FeedEntry> getByIdAndTargetWebsiteId(@PathVariable Long id,
+      @PathVariable Long targetWebsiteId) throws IOException {
     System.out.println("Getting feed by target website.");
     return feedEntryService.findByIdAndTargetWebsiteId(id, targetWebsiteId);
   }

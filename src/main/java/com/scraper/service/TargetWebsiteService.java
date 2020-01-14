@@ -26,6 +26,10 @@ public class TargetWebsiteService {
     return targetWebsiteRepository.findAll();
   }
 
+  public List<TargetWebsite> findAllByIds(List<Long> ids) {
+    return targetWebsiteRepository.findAllById(ids);
+  }
+
   public Optional<TargetWebsite> findById(Long id) {
     return targetWebsiteRepository.findById(id);
   }
