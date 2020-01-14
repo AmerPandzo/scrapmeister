@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 
 @Service
@@ -25,6 +26,14 @@ public class FeedEntryService {
 
   public List<FeedEntry> findAllByTargetWebsiteId(Long targetWebsiteId) {
     return feedEntryRepository.findAllByTargetWebsiteId(targetWebsiteId);
+  }
+
+  public Optional<FeedEntry> findByIdAndTargetWebsiteId(Long id, Long targetWebsiteId) {
+    return feedEntryRepository.findByIdAndTargetWebsiteId(id, targetWebsiteId);
+  }
+
+  public void deleteByIdAndTargetWebsiteId(Long id, Long targetWebsiteId) {
+    feedEntryRepository.deleteByIdAndTargetWebsiteId(id, targetWebsiteId);
   }
 
   public void deleteAllByTargetWebsiteId(Long targetWebsiteId) {

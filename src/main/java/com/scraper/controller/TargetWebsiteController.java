@@ -87,6 +87,18 @@ public class TargetWebsiteController {
     targetWebsiteService.deleteById(id);
   }
 
+  @GetMapping("/targetWebsites/{targetWebsiteId}/feed/{id}")
+  public Optional<FeedEntry> getByIdAndTargetWebsiteId(@PathVariable Long id, @PathVariable Long targetWebsiteId) throws IOException {
+    System.out.println("Getting feed by target website.");
+    return feedEntryService.findByIdAndTargetWebsiteId(id, targetWebsiteId);
+  }
+
+  @DeleteMapping("/targetWebsites/{targetWebsiteId}/feed/{id}")
+  public void deleteByIdAndTargetWebsiteId(@PathVariable Long id, @PathVariable Long targetWebsiteId) throws IOException {
+    System.out.println("Deleting feed by target website.");
+    feedEntryService.deleteByIdAndTargetWebsiteId(id, targetWebsiteId);
+  }
+
   @GetMapping("/targetWebsites/{id}/feeds")
   public List<FeedEntry> getFeedsById(@PathVariable Long id) {
     System.out.println("Getting feeds by website.");
