@@ -1,58 +1,83 @@
 package com.scraper.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import java.util.Collection;
 
 /**
  * TargetWebsite class.
  */
 @Entity
-public class TargetWebsite {
+public class TargetWebsite implements Serializable {
 
-  @Id
-  @GeneratedValue
-  private Long id;
-  private String url;
-  private LocalDateTime createdAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String url;
+    private LocalDateTime createdAt;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "entry_parse_rule_id", referencedColumnName = "id")
-  private EntryParseRule entryParseRule;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
+    private TargetWebsite parent;
 
-  public Long getId() {
-    return id;
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Collection<TargetWebsite> children;
+
+    @OneToOne(cascade = CascadeType.ALL)
+
+    @JoinColumn(name = "entry_parse_rule_id", referencedColumnName = "id")
+    private EntryParseRule entryParseRule;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public EntryParseRule getEntryParseRule() {
+        return entryParseRule;
+    }
+
+    public void setEntryParseRule(EntryParseRule entryParseRule) {
+        this.entryParseRule = entryParseRule;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+  public TargetWebsite getParent() {
+    return parent;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setParent(TargetWebsite parent) {
+    this.parent = parent;
   }
 
-  public String getUrl() {
-    return url;
+  public Collection<TargetWebsite> getChildren() {
+    return children;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
-  public EntryParseRule getEntryParseRule() {
-    return entryParseRule;
-  }
-
-  public void setEntryParseRule(EntryParseRule entryParseRule) {
-    this.entryParseRule = entryParseRule;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setChildren(Collection<TargetWebsite> children) {
+    this.children = children;
   }
 }
