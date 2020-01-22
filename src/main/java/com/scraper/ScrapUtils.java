@@ -1,6 +1,6 @@
 package com.scraper;
 
-public class WebScraperUtils {
+public class ScrapUtils {
 
   public static String generateContent(String content, String imageUrl) {
     return imageUrl.isEmpty() ? content : content + generateThumbnailImageTag(imageUrl);

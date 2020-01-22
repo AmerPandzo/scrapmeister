@@ -7,9 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-public class FeedEntry {
+@Table(name = "feed")
+public class Feed {
 
   @Id
   @GeneratedValue
@@ -22,8 +24,8 @@ public class FeedEntry {
   private String imageUrl;
   private LocalDateTime cratedAt;
   @ManyToOne
-  @JoinColumn(name = "target_website_id")
-  private TargetWebsite targetWebsite;
+  @JoinColumn(name = "website_id")
+  private Website website;
 
   public Long getId() {
     return id;
@@ -73,12 +75,12 @@ public class FeedEntry {
     this.imageUrl = imageUrl;
   }
 
-  public TargetWebsite getTargetWebsite() {
-    return targetWebsite;
+  public Website getWebsite() {
+    return website;
   }
 
-  public void setTargetWebsite(TargetWebsite targetWebsite) {
-    this.targetWebsite = targetWebsite;
+  public void setWebsite(Website website) {
+    this.website = website;
   }
 
   public LocalDateTime getCratedAt() {
@@ -89,74 +91,74 @@ public class FeedEntry {
     this.cratedAt = cratedAt;
   }
 
-  public static final class FeedEntryBuilder {
+  public static final class FeedBuilder {
     private Long id;
     private String title;
     private String author;
     private String content;
     private String url;
     private String imageUrl;
-    private TargetWebsite targetWebsite;
+    private Website website;
     private LocalDateTime createdAt;
 
-    private FeedEntryBuilder() {
+    private FeedBuilder() {
     }
 
-    public static FeedEntryBuilder aFeedEntry() {
-      return new FeedEntryBuilder();
+    public static FeedBuilder aFeed() {
+      return new FeedBuilder();
     }
 
-    public FeedEntryBuilder setId(Long id) {
+    public FeedBuilder setId(Long id) {
       this.id = id;
       return this;
     }
 
-    public FeedEntryBuilder setTitle(String title) {
+    public FeedBuilder setTitle(String title) {
       this.title = title;
       return this;
     }
 
-    public FeedEntryBuilder setAuthor(String author) {
+    public FeedBuilder setAuthor(String author) {
       this.author = author;
       return this;
     }
 
-    public FeedEntryBuilder setContent(String content) {
+    public FeedBuilder setContent(String content) {
       this.content = content;
       return this;
     }
 
-    public FeedEntryBuilder setUrl(String url) {
+    public FeedBuilder setUrl(String url) {
       this.url = url;
       return this;
     }
 
-    public FeedEntryBuilder setImageUrl(String imageUrl) {
+    public FeedBuilder setImageUrl(String imageUrl) {
       this.imageUrl = imageUrl;
       return this;
     }
 
-    public FeedEntryBuilder setTargetWebsite(TargetWebsite targetWebsite) {
-      this.targetWebsite = targetWebsite;
+    public FeedBuilder setWebsite(Website website) {
+      this.website = website;
       return this;
     }
 
-    public FeedEntryBuilder setCratedAt(LocalDateTime cratedAt) {
+    public FeedBuilder setCratedAt(LocalDateTime cratedAt) {
       this.createdAt = cratedAt;
       return this;
     }
 
-    public FeedEntry build() {
-      FeedEntry feedEntry = new FeedEntry();
-      feedEntry.setId(id);
-      feedEntry.setTitle(title);
-      feedEntry.setAuthor(author);
-      feedEntry.setContent(content);
-      feedEntry.setUrl(url);
-      feedEntry.setImageUrl(imageUrl);
-      feedEntry.setTargetWebsite(targetWebsite);
-      feedEntry.setCratedAt(createdAt);
-      return feedEntry;
+    public Feed build() {
+      Feed feed = new Feed();
+      feed.setId(id);
+      feed.setTitle(title);
+      feed.setAuthor(author);
+      feed.setContent(content);
+      feed.setUrl(url);
+      feed.setImageUrl(imageUrl);
+      feed.setWebsite(website);
+      feed.setCratedAt(createdAt);
+      return feed;
     }
   }
 }

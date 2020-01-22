@@ -1,7 +1,7 @@
 package com.scraper.controller;
 
-import com.scraper.domain.FeedEntry;
-import com.scraper.service.WebScraperService;
+import com.scraper.domain.Feed;
+import com.scraper.service.ScrapService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +16,20 @@ import java.util.List;
 public class ScrapController {
 
   @Autowired
-  private WebScraperService webScraperService;
+  private ScrapService scrapService;
 
   @GetMapping("/scrap")
   @ResponseBody
   public String scrap() throws IOException {
     System.out.println("Scrap and save.");
-    return webScraperService.scrapAndSave();
+    return scrapService.scrapAndSave();
   }
 
   @GetMapping("/scrap/{id}")
   @ResponseBody
-  public List<FeedEntry> scrapOneAndSave(@PathVariable Long id) throws IOException, NotFoundException {
+  public List<Feed> scrapOneAndSave(@PathVariable Long id) throws IOException, NotFoundException {
     System.out.println("Scrap and save.");
-    return webScraperService.scrapOneAndSave(id);
+    return scrapService.scrapOneAndSave(id);
   }
 
 }

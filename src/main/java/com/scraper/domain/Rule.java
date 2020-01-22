@@ -1,13 +1,21 @@
 package com.scraper.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
-public class EntryParseRule {
+@Table(name = "rule")
+public class Rule {
 
   @Id
   @GeneratedValue
@@ -18,8 +26,14 @@ public class EntryParseRule {
   private String link;
   private LocalDateTime cratedAt;
 
-  @OneToOne(mappedBy = "entryParseRule")
-  private TargetWebsite targetWebsite;
+  @ManyToMany(fetch = FetchType.LAZY,
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.MERGE
+      },
+      mappedBy = "rules")
+  @JsonBackReference
+  private List<Website> websites = new ArrayList<>();
 
   public Long getId() {
     return id;
@@ -67,5 +81,13 @@ public class EntryParseRule {
 
   public void setCratedAt(LocalDateTime cratedAt) {
     this.cratedAt = cratedAt;
+  }
+
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(final List<Website> websites) {
+    this.websites = websites;
   }
 }

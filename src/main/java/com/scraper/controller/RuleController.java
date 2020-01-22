@@ -1,7 +1,7 @@
 package com.scraper.controller;
 
-import com.scraper.domain.EntryParseRule;
-import com.scraper.service.EntryParseRuleService;
+import com.scraper.domain.Rule;
+import com.scraper.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,15 +12,15 @@ import java.io.IOException;
 import javax.validation.Valid;
 
 @RestController
-public class EntryParseRuleController {
+public class RuleController {
 
   @Autowired
-  private EntryParseRuleService entryParseRuleService;
+  private RuleService ruleService;
 
-  @PostMapping("/entryParseRule")
+  @PostMapping("/rule")
   @ResponseBody
-  public EntryParseRule create(@RequestBody @Valid final EntryParseRule entryParseRule) throws IOException {
+  public Rule create(@RequestBody @Valid final Rule rule) throws IOException {
     System.out.println("Creating entity rule.");
-    return entryParseRuleService.create(entryParseRule);
+    return ruleService.create(rule);
   }
 }
