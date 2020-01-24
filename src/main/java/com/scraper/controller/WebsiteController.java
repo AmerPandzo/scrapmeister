@@ -1,13 +1,16 @@
 package com.scraper.controller;
 
-import com.scraper.domain.Rule;
-import com.scraper.domain.Feed;
-import com.scraper.domain.Website;
-import com.scraper.service.RuleService;
-import com.scraper.service.FeedService;
-import com.scraper.service.WebsiteService;
+import com.scraper.model.domain.Rule;
+import com.scraper.model.domain.Feed;
+import com.scraper.model.domain.Website;
+import com.scraper.model.response.Response;
+import com.scraper.model.response.WebsiteResponse;
+import com.scraper.service.impl.RuleService;
+import com.scraper.service.impl.FeedService;
+import com.scraper.service.impl.WebsiteService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,7 +89,7 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/{id}")
-  public Optional<Website> findById(@PathVariable Long id) throws IOException {
+  public Response findById(@PathVariable Long id) throws IOException {
     System.out.println("Getting target websites.");
     return websiteService.findById(id);
   }

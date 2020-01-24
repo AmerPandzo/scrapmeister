@@ -1,7 +1,9 @@
-package com.scraper.service;
+package com.scraper.service.impl;
 
-import com.scraper.domain.Website;
+import com.scraper.model.domain.Website;
+import com.scraper.model.response.Response;
 import com.scraper.repository.WebsiteRepository;
+import com.scraper.service.IWebsiteService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class WebsiteService {
+public class WebsiteService implements IWebsiteService {
 
   private WebsiteRepository websiteRepository;
 
@@ -29,8 +31,14 @@ public class WebsiteService {
     return websiteRepository.findAllById(ids);
   }
 
-  public Optional<Website> findById(Long id) {
-    return websiteRepository.findById(id);
+  public Response findById(Long id) {
+//    final Optional<Website> optionalWebsite = websiteRepository.findById(id);
+//    if(optionalWebsite.isPresent()) {
+//      return new WebsiteResponse(HttpStatus.OK, "Website successfully fetched.");
+//    } else {
+//      return new WebsiteResponse(HttpStatus.NOT_FOUND, "Website not found.");
+//    }
+    return null;
   }
 
   public void deleteById(Long id) {

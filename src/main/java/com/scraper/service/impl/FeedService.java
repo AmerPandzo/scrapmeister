@@ -1,7 +1,8 @@
-package com.scraper.service;
+package com.scraper.service.impl;
 
-import com.scraper.domain.Feed;
+import com.scraper.model.domain.Feed;
 import com.scraper.repository.FeedRepository;
+import com.scraper.service.IFeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class FeedService {
+public class FeedService implements IFeedService {
 
   @Autowired
   private FeedRepository feedRepository;

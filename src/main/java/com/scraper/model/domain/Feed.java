@@ -1,4 +1,4 @@
-package com.scraper.domain;
+package com.scraper.model.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

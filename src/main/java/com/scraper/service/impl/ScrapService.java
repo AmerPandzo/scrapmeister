@@ -1,9 +1,12 @@
-package com.scraper.service;
+package com.scraper.service.impl;
 
 import com.scraper.ScrapUtils;
-import com.scraper.domain.Rule;
-import com.scraper.domain.Feed;
-import com.scraper.domain.Website;
+import com.scraper.model.domain.Feed;
+import com.scraper.model.domain.Rule;
+import com.scraper.model.domain.Website;
+import com.scraper.service.IFeedService;
+import com.scraper.service.IScrapService;
+import com.scraper.service.IWebsiteService;
 import javassist.NotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,18 +15,18 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class ScrapService {
+public class ScrapService implements IScrapService {
 
-  private WebsiteService websiteService;
-  private FeedService feedService;
+  private IWebsiteService websiteService;
+  private IFeedService feedService;
 
   @Autowired
   public ScrapService(WebsiteService websiteService, FeedService feedService) {
@@ -33,7 +36,7 @@ public class ScrapService {
 
   public List<Feed> scrapOneAndSave(Long id) throws IOException, NotFoundException {
     Optional<Website> maybeSite = websiteService.findById(id);
-    if(!maybeSite.isPresent()) {
+    if (!maybeSite.isPresent()) {
       throw new NotFoundException("Website for scraping not found!");
     }
     entriesCleanupForOne(id);
@@ -56,11 +59,11 @@ public class ScrapService {
   }
 
   private void processWebsiteScrapping(Website website) throws IOException {
-      Document doc = Jsoup.connect(website.getUrl()).get();
-      String websiteTitle = doc.title();
-      System.out.println(websiteTitle);
-      Elements elements = doc.select(website.getRules().get(0).getNewsContainer());
-      elements.forEach(element -> saveFeed(element, website, websiteTitle));
+    Document doc = Jsoup.connect(website.getUrl()).get();
+    String websiteTitle = doc.title();
+    System.out.println(websiteTitle);
+    Elements elements = doc.select(website.getRules().get(0).getNewsContainer());
+    elements.forEach(element -> saveFeed(element, website, websiteTitle));
   }
 
   private void entriesCleanup() {
@@ -74,9 +77,9 @@ public class ScrapService {
   private Feed saveFeed(Element element, Website website, String websiteTitle) {
     Rule rule = website.getRules().get(0);
     String imageUrl = "no image";
-   if(element.select("img").first() != null) {
-       imageUrl = element.select("img").first().absUrl("src");
-   }
+    if (element.select("img").first() != null) {
+      imageUrl = element.select("img").first().absUrl("src");
+    }
     return feedService.save(
         Feed.FeedBuilder.aFeed()
             .setAuthor(websiteTitle)

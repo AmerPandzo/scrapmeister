@@ -1,6 +1,6 @@
 package com.scraper.repository;
 
-import com.scraper.domain.Rule;
+import com.scraper.model.domain.Rule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

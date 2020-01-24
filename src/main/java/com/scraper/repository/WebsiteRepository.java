@@ -1,6 +1,6 @@
 package com.scraper.repository;
 
-import com.scraper.domain.Website;
+import com.scraper.model.domain.Website;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

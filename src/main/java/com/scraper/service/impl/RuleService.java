@@ -1,7 +1,8 @@
-package com.scraper.service;
+package com.scraper.service.impl;
 
-import com.scraper.domain.Rule;
+import com.scraper.model.domain.Rule;
 import com.scraper.repository.RuleRepository;
+import com.scraper.service.IRuleService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class RuleService {
+public class RuleService implements IRuleService {
 
   private RuleRepository ruleRepository;
 
@@ -33,7 +34,7 @@ public class RuleService {
 
   public Rule update(Rule newRule) throws NotFoundException {
     final Optional<Rule> maybeRule = ruleRepository.findById(newRule.getId());
-    if(!maybeRule.isPresent()) throw new NotFoundException("Rule not found.");
+    if (!maybeRule.isPresent()) throw new NotFoundException("Rule not found.");
     final Rule rule = maybeRule.get();
     rule.setNewsContainer(newRule.getNewsContainer());
     rule.setTitle(newRule.getTitle());

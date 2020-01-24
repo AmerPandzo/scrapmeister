@@ -1,7 +1,7 @@
 package com.scraper.controller;
 
-import com.scraper.domain.Feed;
-import com.scraper.service.ScrapService;
+import com.scraper.model.domain.Feed;
+import com.scraper.service.impl.ScrapService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.scraper.domain;
+package com.scraper.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
