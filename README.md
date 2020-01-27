@@ -2,7 +2,7 @@
 ## Technologies
 * Java
 * Spring Boot
-* MySql
+* PostgreSql
 * Jsoup
 * Git / GitHub
 * Heroku 
