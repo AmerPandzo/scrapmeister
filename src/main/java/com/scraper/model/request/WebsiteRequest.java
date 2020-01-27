@@ -8,6 +8,7 @@ import java.util.List;
 public class WebsiteRequest {
 
   private String url;
+  private Long parentId;
   private List<RuleRequest> rules;
 
   public String getUrl() {
@@ -26,10 +27,19 @@ public class WebsiteRequest {
     this.rules = rules;
   }
 
+  public Long getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(final Long parentId) {
+    this.parentId = parentId;
+  }
+
   @Override
   public String toString() {
     return "WebsiteRequest{" +
         "url='" + url + '\'' +
+        ", parentId=" + parentId +
         ", rules=" + rules +
         '}';
   }

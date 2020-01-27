@@ -4,6 +4,7 @@ import com.scraper.ScrapUtils;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
+import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IFeedService;
 import com.scraper.service.IScrapService;
 import com.scraper.service.IWebsiteService;
@@ -25,17 +26,17 @@ import javax.transaction.Transactional;
 @Transactional
 public class ScrapService implements IScrapService {
 
-  private IWebsiteService websiteService;
+  private WebsiteRepository websiteRepository;
   private IFeedService feedService;
 
   @Autowired
-  public ScrapService(WebsiteService websiteService, FeedService feedService) {
-    this.websiteService = websiteService;
+  public ScrapService(WebsiteRepository websiteRepository, FeedService feedService) {
+    this.websiteRepository = websiteRepository;
     this.feedService = feedService;
   }
 
   public List<Feed> scrapOneAndSave(Long id) throws IOException, NotFoundException {
-    Optional<Website> maybeSite = websiteService.findById(id);
+    Optional<Website> maybeSite = websiteRepository.findById(id);
     if (!maybeSite.isPresent()) {
       throw new NotFoundException("Website for scraping not found!");
     }
@@ -45,7 +46,7 @@ public class ScrapService implements IScrapService {
   }
 
   public String scrapAndSave() throws IOException {
-    List<Website> websites = websiteService.findAll();
+    List<Website> websites = websiteRepository.findAll();
     System.out.println("Number of websites scraped: " + websites.size());
     entriesCleanup();
     processWebsitesScrapping(websites);

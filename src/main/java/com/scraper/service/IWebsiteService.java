@@ -1,6 +1,7 @@
 package com.scraper.service;
 
 import com.scraper.model.domain.Website;
+import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import javassist.NotFoundException;
 
@@ -16,7 +17,7 @@ public interface IWebsiteService {
 
   void deleteById(Long id);
 
-  Website create(Website website);
+  Website create(WebsiteRequest websiteRequest);
 
   Website update(Website newWebsite) throws NotFoundException;
 }

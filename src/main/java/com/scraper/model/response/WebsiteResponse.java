@@ -33,8 +33,8 @@ public class WebsiteResponse implements Response {
     this.createdAt = createdAt;
   }
 
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+  public LocalDateTime getUpdatedAt(final LocalDateTime updatedAt) {
+    return this.updatedAt;
   }
 
   public void setUpdatedAt(final LocalDateTime updatedAt) {

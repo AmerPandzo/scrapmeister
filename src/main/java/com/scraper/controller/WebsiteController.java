@@ -1,16 +1,15 @@
 package com.scraper.controller;
 
-import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Feed;
+import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
+import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
-import com.scraper.model.response.WebsiteResponse;
-import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.FeedService;
+import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.WebsiteService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,17 +46,10 @@ public class WebsiteController {
 
   @PostMapping("/websites")
   @ResponseBody
-  public Website create(@RequestBody @Valid final Website website) throws IOException {
+  public Website create(@RequestBody @Valid final WebsiteRequest websiteRequest) {
     System.out.println("Creating target website.");
-    List<Rule> rules = website.getRules();
-    final LocalDateTime cratedAt = LocalDateTime.now();
-    rules.forEach(rule ->
-        rule.setCratedAt(cratedAt)
-    );
-    website.setRules(rules);
-    //ruleService.create(rule);
-    website.setCreatedAt(cratedAt);
-    return websiteService.create(website);
+    //ruleService.create(rule); // this will be delegated for WebsiteService to handle
+    return websiteService.create(websiteRequest);
   }
 
   @PutMapping("/websites/update")
@@ -70,7 +62,7 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites")
-  public List<Website> findAll(@RequestParam Optional<List<Long>> ids) throws IOException {
+  public List<Website> findAll(@RequestParam Optional<List<Long>> ids) {
     List<Website> websites;
     if (!ids.isPresent()) {
       System.out.println("Getting all target website.");
@@ -83,25 +75,25 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/byIds")
-  public List<Website> findAllByIds(@RequestParam List<Long> ids) throws IOException {
+  public List<Website> findAllByIds(@RequestParam List<Long> ids) {
     System.out.println("Getting all target website by list of ids.");
     return websiteService.findAllByIds(ids);
   }
 
   @GetMapping("/websites/{id}")
-  public Response findById(@PathVariable Long id) throws IOException {
+  public Response findById(@PathVariable Long id) {
     System.out.println("Getting target websites.");
     return websiteService.findById(id);
   }
 
   @DeleteMapping("/websites/{id}")
-  public void deleteById(@PathVariable Long id) throws IOException {
+  public void deleteById(@PathVariable Long id) {
     System.out.println("Deleting target websites.");
     websiteService.deleteById(id);
   }
 
   @DeleteMapping("/websites/{id}/feeds")
-  public void deleteAllFeedsById(@PathVariable Long id) throws IOException {
+  public void deleteAllFeedsById(@PathVariable Long id) {
     System.out.println("Deleting target websites.");
     feedService.deleteAllByWebsiteId(id);
     websiteService.deleteById(id);
@@ -115,7 +107,7 @@ public class WebsiteController {
   }
 
   @DeleteMapping("/websites/{websiteId}/feed/{id}")
-  public void deleteByIdAndWebsiteId(@PathVariable Long id, @PathVariable Long websiteId) throws IOException {
+  public void deleteByIdAndWebsiteId(@PathVariable Long id, @PathVariable Long websiteId) {
     System.out.println("Deleting feed by target websites.");
     feedService.deleteByIdAndWebsiteId(id, websiteId);
   }
