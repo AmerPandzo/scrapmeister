@@ -4,10 +4,10 @@ import com.scraper.ScrapUtils;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
+import com.scraper.model.response.ResponseList;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IFeedService;
 import com.scraper.service.IScrapService;
-import com.scraper.service.IWebsiteService;
 import javassist.NotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,7 +35,7 @@ public class ScrapService implements IScrapService {
     this.feedService = feedService;
   }
 
-  public List<Feed> scrapOneAndSave(Long id) throws IOException, NotFoundException {
+  public ResponseList scrapOneAndSave(Long id) throws IOException, NotFoundException {
     Optional<Website> maybeSite = websiteRepository.findById(id);
     if (!maybeSite.isPresent()) {
       throw new NotFoundException("Website for scraping not found!");

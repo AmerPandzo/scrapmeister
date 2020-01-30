@@ -1,6 +1,7 @@
 package com.scraper.service;
 
 import com.scraper.model.domain.Feed;
+import com.scraper.model.response.ResponseList;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ public interface IFeedService {
 
   List<Feed> findAll();
 
-  List<Feed> findAllByWebsiteId(Long websiteId);
+  ResponseList findAllByWebsiteId(Long websiteId);
 
   Optional<Feed> findByIdAndWebsiteId(Long id, Long websiteId);
 

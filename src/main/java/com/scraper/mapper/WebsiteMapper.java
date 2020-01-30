@@ -1,11 +1,13 @@
 package com.scraper.mapper;
 
+import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
+import com.scraper.model.response.PlainFeedResponse;
 import com.scraper.model.response.PlainWebsiteResponse;
 import com.scraper.model.response.WebsiteResponse;
-import com.scraper.model.response.WebsiteResponseList;
+import com.scraper.model.response.ResponseList;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -66,13 +68,34 @@ public final class WebsiteMapper {
     return websiteResponse;
   }
 
-  public static WebsiteResponseList fromWebsitesToWebsiteResponseList(final List<Website> websites) {
+  public static PlainFeedResponse fromFeedToFeedResponse(final Feed feed) {
+    PlainFeedResponse plainFeedResponse = new PlainFeedResponse();
+    plainFeedResponse.setUrl(feed.getUrl());
+    plainFeedResponse.setAuthor(feed.getAuthor());
+    plainFeedResponse.setContent(feed.getContent());
+    plainFeedResponse.setCratedAt(feed.getCratedAt());
+    plainFeedResponse.setImageUrl(feed.getImageUrl());
+    plainFeedResponse.setTitle(feed.getTitle());
+    return plainFeedResponse;
+  }
+
+  public static ResponseList fromWebsitesToWebsiteResponseList(final List<Website> websites) {
     List<PlainWebsiteResponse> websiteResponses = new ArrayList<>();
     websites.forEach(website -> websiteResponses.add(fromWebsiteToPlainWebsiteResponse(website)));
-    WebsiteResponseList websiteResponseList = new WebsiteResponseList();
-    websiteResponseList.setMessage("Successfully fetched list.");
-    websiteResponseList.setStatus(HttpStatus.OK);
-    websiteResponseList.setPlainWebsiteResponses(websiteResponses);
-    return websiteResponseList;
+    ResponseList responseList = new ResponseList();
+    responseList.setMessage("Successfully fetched list.");
+    responseList.setStatus(HttpStatus.OK);
+    responseList.setPlainResponses(websiteResponses);
+    return responseList;
+  }
+
+  public static ResponseList fromFeedToWebsiteResponseList(final List<Feed> feeds) {
+    List<PlainFeedResponse> websiteResponses = new ArrayList<>();
+    feeds.forEach(feed -> websiteResponses.add(fromFeedToFeedResponse(feed)));
+    ResponseList responseList = new ResponseList();
+    responseList.setMessage("Successfully fetched list.");
+    responseList.setStatus(HttpStatus.OK);
+    responseList.setPlainResponses(websiteResponses);
+    return responseList;
   }
 }

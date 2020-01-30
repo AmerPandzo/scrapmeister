@@ -5,7 +5,7 @@ import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.WebsiteResponse;
-import com.scraper.model.response.WebsiteResponseList;
+import com.scraper.model.response.ResponseList;
 import com.scraper.repository.RuleRepository;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IWebsiteService;
@@ -31,11 +31,11 @@ public class WebsiteService implements IWebsiteService {
     this.ruleRepository = ruleRepository;
   }
 
-  public WebsiteResponseList findAll() {
+  public ResponseList findAll() {
     return WebsiteMapper.fromWebsitesToWebsiteResponseList(websiteRepository.findAll());
   }
 
-  public WebsiteResponseList findAllByIds(List<Long> ids) {
+  public ResponseList findAllByIds(List<Long> ids) {
     return WebsiteMapper.fromWebsitesToWebsiteResponseList(websiteRepository.findAllById(ids));
   }
 

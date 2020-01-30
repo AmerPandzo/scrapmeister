@@ -4,7 +4,7 @@ import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
-import com.scraper.model.response.WebsiteResponseList;
+import com.scraper.model.response.ResponseList;
 import com.scraper.service.impl.FeedService;
 import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.WebsiteService;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -61,8 +60,8 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites")
-  public WebsiteResponseList findAll(@RequestParam Optional<List<Long>> ids) {
-    WebsiteResponseList websites;
+  public ResponseList findAll(@RequestParam Optional<List<Long>> ids) {
+    ResponseList websites;
     if (!ids.isPresent()) {
       System.out.println("Getting all target website.");
       websites = websiteService.findAll();
@@ -74,7 +73,7 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/byIds")
-  public WebsiteResponseList findAllByIds(@RequestParam List<Long> ids) {
+  public ResponseList findAllByIds(@RequestParam List<Long> ids) {
     System.out.println("Getting all target website by list of ids.");
     return websiteService.findAllByIds(ids);
   }
@@ -100,7 +99,7 @@ public class WebsiteController {
 
   @GetMapping("/websites/{websiteId}/feed/{id}")
   public Optional<Feed> getByIdAndWebsiteId(@PathVariable Long id,
-      @PathVariable Long websiteId) throws IOException {
+      @PathVariable Long websiteId) {
     System.out.println("Getting feed by target websites.");
     return feedService.findByIdAndWebsiteId(id, websiteId);
   }
@@ -112,7 +111,7 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/{id}/feeds")
-  public List<Feed> getFeedsById(@PathVariable Long id) {
+  public ResponseList getFeedsById(@PathVariable Long id) {
     System.out.println("Getting feeds by websites.");
     return feedService.findAllByWebsiteId(id);
   }

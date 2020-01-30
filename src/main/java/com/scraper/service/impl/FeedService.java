@@ -1,6 +1,8 @@
 package com.scraper.service.impl;
 
+import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Feed;
+import com.scraper.model.response.ResponseList;
 import com.scraper.repository.FeedRepository;
 import com.scraper.service.IFeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,8 @@ public class FeedService implements IFeedService {
     return feedRepository.findAll();
   }
 
-  public List<Feed> findAllByWebsiteId(Long websiteId) {
-    return feedRepository.findAllByWebsiteId(websiteId);
+  public ResponseList findAllByWebsiteId(Long websiteId) {
+    return WebsiteMapper.fromFeedToWebsiteResponseList(feedRepository.findAllByWebsiteId(websiteId));
   }
 
   public Optional<Feed> findByIdAndWebsiteId(Long id, Long websiteId) {

@@ -1,14 +1,13 @@
 package com.scraper.service;
 
-import com.scraper.model.domain.Feed;
+import com.scraper.model.response.ResponseList;
 import javassist.NotFoundException;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface IScrapService {
 
-  List<Feed> scrapOneAndSave(Long id) throws IOException, NotFoundException;
+  ResponseList scrapOneAndSave(Long id) throws IOException, NotFoundException;
 
   String scrapAndSave() throws IOException;
 

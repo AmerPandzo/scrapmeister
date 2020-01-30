@@ -2,13 +2,10 @@ package com.scraper.model.response;
 
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
-
-public class WebsiteResponseList implements Response {
+public class FeedResponse extends PlainFeedResponse implements Response {
 
   private HttpStatus status;
   private String message;
-  private List<PlainWebsiteResponse> plainWebsiteResponses;
 
   public HttpStatus getStatus() {
     return status;
@@ -26,11 +23,11 @@ public class WebsiteResponseList implements Response {
     this.message = message;
   }
 
-  public List<PlainWebsiteResponse> getPlainWebsiteResponses() {
-    return plainWebsiteResponses;
-  }
-
-  public void setPlainWebsiteResponses(final List<PlainWebsiteResponse> plainWebsiteResponses) {
-    this.plainWebsiteResponses = plainWebsiteResponses;
+  @Override
+  public String toString() {
+    return "WebsiteResponse{" +
+        "status=" + status +
+        ", message='" + message + '\'' +
+        '}';
   }
 }
