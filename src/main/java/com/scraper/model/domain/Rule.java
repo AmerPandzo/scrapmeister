@@ -3,8 +3,8 @@ package com.scraper.model.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +33,7 @@ public class Rule {
       },
       mappedBy = "rules")
   @JsonBackReference
-  private List<Website> websites = new ArrayList<>();
+  private Set<Website> websites = new HashSet<>();
 
   public Long getId() {
     return id;
@@ -83,11 +83,11 @@ public class Rule {
     this.cratedAt = cratedAt;
   }
 
-  public List<Website> getWebsites() {
+  public Set<Website> getWebsites() {
     return websites;
   }
 
-  public void setWebsites(final List<Website> websites) {
+  public void setWebsites(final Set<Website> websites) {
     this.websites = websites;
   }
 }

@@ -5,6 +5,7 @@ import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.WebsiteResponse;
+import com.scraper.model.response.WebsiteResponseList;
 import com.scraper.repository.RuleRepository;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IWebsiteService;
@@ -30,12 +31,12 @@ public class WebsiteService implements IWebsiteService {
     this.ruleRepository = ruleRepository;
   }
 
-  public List<Website> findAll() {
-    return websiteRepository.findAll();
+  public WebsiteResponseList findAll() {
+    return WebsiteMapper.fromWebsitesToWebsiteResponseList(websiteRepository.findAll());
   }
 
-  public List<Website> findAllByIds(List<Long> ids) {
-    return websiteRepository.findAllById(ids);
+  public WebsiteResponseList findAllByIds(List<Long> ids) {
+    return WebsiteMapper.fromWebsitesToWebsiteResponseList(websiteRepository.findAllById(ids));
   }
 
   public Response findById(Long id) {
@@ -57,7 +58,7 @@ public class WebsiteService implements IWebsiteService {
     websiteRepository.deleteById(id);
   }
 
-  public Website create(WebsiteRequest websiteRequest) {
+  public Response create(WebsiteRequest websiteRequest) {
     final Website website = WebsiteMapper.fromWebsiteRequestToWebsite(websiteRequest);
     final Optional<Website> maybeParent = websiteRepository.findById(websiteRequest.getParentId());
     if (!maybeParent.isPresent()) {
@@ -68,7 +69,9 @@ public class WebsiteService implements IWebsiteService {
     website.getRules().forEach(rule ->
         ruleRepository.save(rule)
     );
-    return websiteRepository.save(website);
+    final Website savedWebsite = websiteRepository.save(website);
+    final WebsiteResponse websiteResponse = WebsiteMapper.fromWebsiteToWebsiteResponse(savedWebsite);
+    return websiteResponse;
   }
 
   public Website update(Website newWebsite) throws NotFoundException {

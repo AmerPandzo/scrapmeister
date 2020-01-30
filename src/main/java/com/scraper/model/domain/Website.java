@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,7 +57,7 @@ public class Website implements Serializable {
       "site_rule",
       joinColumns = {@JoinColumn(name = "website_id")},
       inverseJoinColumns = {@JoinColumn(name = "rule_id")})
-  private List<Rule> rules = new ArrayList<>();
+  private Set<Rule> rules = new HashSet<>();
 
   public Long getId() {
     return id;
@@ -99,11 +99,11 @@ public class Website implements Serializable {
     this.children = children;
   }
 
-  public List<Rule> getRules() {
+  public Set<Rule> getRules() {
     return rules;
   }
 
-  public void setRules(final List<Rule> rules) {
+  public void setRules(final Set<Rule> rules) {
     this.rules = rules;
   }
 

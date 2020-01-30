@@ -63,7 +63,7 @@ public class ScrapService implements IScrapService {
     Document doc = Jsoup.connect(website.getUrl()).get();
     String websiteTitle = doc.title();
     System.out.println(websiteTitle);
-    Elements elements = doc.select(website.getRules().get(0).getNewsContainer());
+    Elements elements = doc.select(website.getRules().stream().findFirst().get().getNewsContainer());
     elements.forEach(element -> saveFeed(element, website, websiteTitle));
   }
 
@@ -76,7 +76,7 @@ public class ScrapService implements IScrapService {
   }
 
   private Feed saveFeed(Element element, Website website, String websiteTitle) {
-    Rule rule = website.getRules().get(0);
+    Rule rule = website.getRules().stream().findFirst().get();
     String imageUrl = "no image";
     if (element.select("img").first() != null) {
       imageUrl = element.select("img").first().absUrl("src");

@@ -1,10 +1,10 @@
 package com.scraper.controller;
 
 import com.scraper.model.domain.Feed;
-import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
+import com.scraper.model.response.WebsiteResponseList;
 import com.scraper.service.impl.FeedService;
 import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.WebsiteService;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -46,7 +45,7 @@ public class WebsiteController {
 
   @PostMapping("/websites")
   @ResponseBody
-  public Website create(@RequestBody @Valid final WebsiteRequest websiteRequest) {
+  public Response create(@RequestBody @Valid final WebsiteRequest websiteRequest) {
     System.out.println("Creating target website.");
     //ruleService.create(rule); // this will be delegated for WebsiteService to handle
     return websiteService.create(websiteRequest);
@@ -62,8 +61,8 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites")
-  public List<Website> findAll(@RequestParam Optional<List<Long>> ids) {
-    List<Website> websites;
+  public WebsiteResponseList findAll(@RequestParam Optional<List<Long>> ids) {
+    WebsiteResponseList websites;
     if (!ids.isPresent()) {
       System.out.println("Getting all target website.");
       websites = websiteService.findAll();
@@ -75,7 +74,7 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/byIds")
-  public List<Website> findAllByIds(@RequestParam List<Long> ids) {
+  public WebsiteResponseList findAllByIds(@RequestParam List<Long> ids) {
     System.out.println("Getting all target website by list of ids.");
     return websiteService.findAllByIds(ids);
   }
