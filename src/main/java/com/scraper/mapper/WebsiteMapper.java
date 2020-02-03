@@ -3,11 +3,14 @@ package com.scraper.mapper;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
+import com.scraper.model.request.FeedRequest;
+import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.PlainFeedResponse;
 import com.scraper.model.response.PlainWebsiteResponse;
-import com.scraper.model.response.WebsiteResponse;
 import com.scraper.model.response.ResponseList;
+import com.scraper.model.response.RuleResponse;
+import com.scraper.model.response.WebsiteResponse;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -40,6 +43,33 @@ public final class WebsiteMapper {
     });
     website.setRules(rules);
     return website;
+  }
+
+  public static Rule fromRuleRequestToRule(final RuleRequest ruleRequest) {
+    final LocalDateTime cratedAt = LocalDateTime.now();
+    Rule rule = new Rule();
+    rule.setContent(ruleRequest.getContent());
+    rule.setLink(ruleRequest.getLink());
+    rule.setNewsContainer(ruleRequest.getNewsContainer());
+    rule.setTitle(ruleRequest.getTitle());
+    rule.setCratedAt(cratedAt);
+    return rule;
+  }
+
+  public static Set<Rule> fromRuleRequestsToRules(final List<RuleRequest> ruleRequestList) {
+    Set<Rule> rules = new HashSet<>();
+    ruleRequestList.forEach(ruleRequest -> rules.add(fromRuleRequestToRule(ruleRequest)));
+    return rules;
+  }
+
+  public static RuleResponse fromRuleToRuleResponse(final Rule rule) {
+    RuleResponse ruleResponse = new RuleResponse();
+    ruleResponse.setContent(rule.getContent());
+    ruleResponse.setCratedAt(rule.getCratedAt());
+    ruleResponse.setLink(rule.getLink());
+    ruleResponse.setNewsContainer(rule.getNewsContainer());
+    ruleResponse.setTitle(rule.getTitle());
+    return ruleResponse;
   }
 
   public static WebsiteResponse fromWebsiteToWebsiteResponse(final Website website) {
@@ -77,6 +107,18 @@ public final class WebsiteMapper {
     plainFeedResponse.setImageUrl(feed.getImageUrl());
     plainFeedResponse.setTitle(feed.getTitle());
     return plainFeedResponse;
+  }
+
+  public static Feed fromFeedRequestToFeed(final FeedRequest feedRequest) {
+    final LocalDateTime cratedAt = LocalDateTime.now();
+    Feed feed = new Feed();
+    feed.setUrl(feedRequest.getUrl());
+    feed.setAuthor(feedRequest.getAuthor());
+    feed.setContent(feedRequest.getContent());
+    feed.setCratedAt(cratedAt);
+    feed.setImageUrl(feedRequest.getImageUrl());
+    feed.setTitle(feedRequest.getTitle());
+    return feed;
   }
 
   public static ResponseList fromWebsitesToWebsiteResponseList(final List<Website> websites) {

@@ -1,12 +1,13 @@
 package com.scraper.service.impl;
 
 import com.scraper.ScrapUtils;
+import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
 import com.scraper.model.domain.Website;
 import com.scraper.model.response.ResponseList;
+import com.scraper.repository.FeedRepository;
 import com.scraper.repository.WebsiteRepository;
-import com.scraper.service.IFeedService;
 import com.scraper.service.IScrapService;
 import javassist.NotFoundException;
 import org.jsoup.Jsoup;
@@ -27,12 +28,12 @@ import javax.transaction.Transactional;
 public class ScrapService implements IScrapService {
 
   private WebsiteRepository websiteRepository;
-  private IFeedService feedService;
+  private FeedRepository feedRepository;
 
   @Autowired
-  public ScrapService(WebsiteRepository websiteRepository, FeedService feedService) {
+  public ScrapService(WebsiteRepository websiteRepository, FeedRepository feedRepository) {
     this.websiteRepository = websiteRepository;
-    this.feedService = feedService;
+    this.feedRepository = feedRepository;
   }
 
   public ResponseList scrapOneAndSave(Long id) throws IOException, NotFoundException {
@@ -42,7 +43,7 @@ public class ScrapService implements IScrapService {
     }
     entriesCleanupForOne(id);
     processWebsiteScrapping(maybeSite.get());
-    return feedService.findAllByWebsiteId(id);
+    return WebsiteMapper.fromFeedToWebsiteResponseList(feedRepository.findAllByWebsiteId(id));
   }
 
   public String scrapAndSave() throws IOException {
@@ -68,11 +69,11 @@ public class ScrapService implements IScrapService {
   }
 
   private void entriesCleanup() {
-    feedService.deleteAll();
+    feedRepository.deleteAll();
   }
 
   private void entriesCleanupForOne(Long id) {
-    feedService.deleteAllByWebsiteId(id);
+    feedRepository.deleteAllByWebsiteId(id);
   }
 
   private Feed saveFeed(Element element, Website website, String websiteTitle) {
@@ -81,7 +82,7 @@ public class ScrapService implements IScrapService {
     if (element.select("img").first() != null) {
       imageUrl = element.select("img").first().absUrl("src");
     }
-    return feedService.save(
+    return feedRepository.save(
         Feed.FeedBuilder.aFeed()
             .setAuthor(websiteTitle)
             .setTitle(element.select(rule.getTitle()).text())

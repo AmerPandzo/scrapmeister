@@ -20,5 +20,5 @@ public interface IWebsiteService {
 
   Response create(WebsiteRequest websiteRequest);
 
-  Website update(Website newWebsite) throws NotFoundException;
+  Response update(Long id, WebsiteRequest websiteRequest) throws NotFoundException;
 }

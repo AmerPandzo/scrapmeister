@@ -1,5 +1,7 @@
 package com.scraper.model.request;
 
+import com.sun.istack.Nullable;
+
 import java.util.List;
 
 /**

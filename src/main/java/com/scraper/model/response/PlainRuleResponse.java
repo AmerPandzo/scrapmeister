@@ -1,25 +1,13 @@
-package com.scraper.model.request;
+package com.scraper.model.response;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-/**
- * Rule request class.
- */
-public class RuleRequest {
-  private Long id;
+public class PlainRuleResponse {
   private String newsContainer;
   private String title;
   private String content;
   private String link;
-  private List<WebsiteRequest> websites;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(final Long id) {
-    this.id = id;
-  }
+  private LocalDateTime cratedAt;
 
   public String getNewsContainer() {
     return newsContainer;
@@ -53,11 +41,11 @@ public class RuleRequest {
     this.link = link;
   }
 
-  public List<WebsiteRequest> getWebsites() {
-    return websites;
+  public LocalDateTime getCratedAt() {
+    return cratedAt;
   }
 
-  public void setWebsites(final List<WebsiteRequest> websites) {
-    this.websites = websites;
+  public void setCratedAt(final LocalDateTime cratedAt) {
+    this.cratedAt = cratedAt;
   }
 }

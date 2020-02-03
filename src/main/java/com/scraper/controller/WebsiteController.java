@@ -1,7 +1,7 @@
 package com.scraper.controller;
 
 import com.scraper.model.domain.Feed;
-import com.scraper.model.domain.Website;
+import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
@@ -50,13 +50,19 @@ public class WebsiteController {
     return websiteService.create(websiteRequest);
   }
 
-  @PutMapping("/websites/update")
+  @PutMapping("/websites/{id}")
   @ResponseBody
-  public Website update(@RequestBody @Valid final Website website) throws NotFoundException {
+  public Response update(@PathVariable Long id,
+      @RequestBody @Valid final WebsiteRequest websiteRequest) throws NotFoundException {
     System.out.println("Updating target website.");
-    //Rule rule = website.getRule();
-    //ruleService.update(rule);
-    return websiteService.update(website);
+    final List<RuleRequest> rules = websiteRequest.getRules();
+    rules.forEach(ruleRequest -> {
+      try {
+        ruleService.update(ruleRequest);
+      } catch (NotFoundException e) {
+      }
+    });
+    return websiteService.update(id, websiteRequest);
   }
 
   @GetMapping("/websites")

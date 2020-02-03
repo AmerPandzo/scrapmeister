@@ -4,8 +4,8 @@ import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Website;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
-import com.scraper.model.response.WebsiteResponse;
 import com.scraper.model.response.ResponseList;
+import com.scraper.model.response.WebsiteResponse;
 import com.scraper.repository.RuleRepository;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IWebsiteService;
@@ -60,12 +60,17 @@ public class WebsiteService implements IWebsiteService {
 
   public Response create(WebsiteRequest websiteRequest) {
     final Website website = WebsiteMapper.fromWebsiteRequestToWebsite(websiteRequest);
-    final Optional<Website> maybeParent = websiteRepository.findById(websiteRequest.getParentId());
-    if (!maybeParent.isPresent()) {
-      website.setParent(null);
+    if (websiteRequest.getParentId() != null) {
+      final Optional<Website> maybeParent = websiteRepository.findById(websiteRequest.getParentId());
+      if (!maybeParent.isPresent()) {
+        website.setParent(null);
+      } else {
+        website.setParent(maybeParent.get());
+      }
     } else {
-      website.setParent(maybeParent.get());
+      website.setParent(null);
     }
+
     website.getRules().forEach(rule ->
         ruleRepository.save(rule)
     );
@@ -74,13 +79,23 @@ public class WebsiteService implements IWebsiteService {
     return websiteResponse;
   }
 
-  public Website update(Website newWebsite) throws NotFoundException {
-    Optional<Website> maybeSite = websiteRepository.findById(newWebsite.getId());
+  public Response update(Long id, WebsiteRequest newWebsite) throws NotFoundException {
+    Optional<Website> maybeSite = websiteRepository.findById(id);
     if (!maybeSite.isPresent()) throw new NotFoundException("Website not found.");
     final Website website = maybeSite.get();
+    if (newWebsite.getParentId() != null) {
+      final Optional<Website> maybeParent = websiteRepository.findById(newWebsite.getParentId());
+      if (maybeParent.isPresent()) {
+        website.setParent(maybeParent.get());
+      } else {
+        website.setParent(null);
+      }
+    } else {
+      website.setParent(null);
+    }
     website.setUrl(newWebsite.getUrl());
-    website.setRules(newWebsite.getRules());
-    return websiteRepository.save(website);
+    website.setRules(WebsiteMapper.fromRuleRequestsToRules(newWebsite.getRules()));
+    return WebsiteMapper.fromWebsiteToWebsiteResponse(websiteRepository.save(website));
   }
 
 }

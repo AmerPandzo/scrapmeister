@@ -1,13 +1,15 @@
 package com.scraper.service;
 
 import com.scraper.model.domain.Feed;
+import com.scraper.model.request.FeedRequest;
+import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IFeedService {
-  Feed save(Feed feed);
+  Response save(FeedRequest feedRequest);
 
   List<Feed> findAll();
 
