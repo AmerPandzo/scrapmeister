@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.transaction.Transactional;
 
 @Service
@@ -66,6 +68,27 @@ public class ScrapService implements IScrapService {
     System.out.println(websiteTitle);
     Elements elements = doc.select(website.getRules().stream().findFirst().get().getNewsContainer());
     elements.forEach(element -> saveFeed(element, website, websiteTitle));
+  }
+
+  public Elements processWebsiteChildren(Website website) throws IOException {
+    Document doc = Jsoup.connect(website.getUrl()).get();
+    String websiteTitle = doc.title();
+    System.out.println(websiteTitle);
+    return doc.select(website.getRules().stream().findFirst().get().getNewsContainer());
+  }
+
+  public Website saveWebsiteChildren(Element element, Website website, Rule childrenRule) throws IOException {
+    Rule rule = website.getRules().stream().findFirst().get();
+    Set<Rule> rules = new HashSet<>();
+    rules.add(childrenRule);
+    return websiteRepository.save(
+        Website.WebsiteBuilder.aWebsite()
+            .setCreatedAt(LocalDateTime.now())
+            .setParent(website)
+            .setUpdatedAt(LocalDateTime.now()            )
+            .setUrl(element.select(rule.getLink()).attr("abs:href"))
+            .setRules(rules)
+            .build());
   }
 
   private void entriesCleanup() {

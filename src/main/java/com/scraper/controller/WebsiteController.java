@@ -5,6 +5,7 @@ import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
+import com.scraper.service.error.ErrorResponseBuilder;
 import com.scraper.service.impl.FeedService;
 import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.WebsiteService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -33,13 +35,17 @@ public class WebsiteController {
 
   private FeedService feedService;
 
+  private ErrorResponseBuilder errorResponseBuilder;
+
   @Autowired
   public WebsiteController(WebsiteService websiteService,
       RuleService ruleService,
-      FeedService feedService) {
+      FeedService feedService,
+      ErrorResponseBuilder errorResponseBuilder) {
     this.websiteService = websiteService;
     this.ruleService = ruleService;
     this.feedService = feedService;
+    this.errorResponseBuilder = errorResponseBuilder;
   }
 
   @PostMapping("/websites")
@@ -48,6 +54,14 @@ public class WebsiteController {
     System.out.println("Creating target website.");
     //ruleService.create(rule); // this will be delegated for WebsiteService to handle
     return websiteService.create(websiteRequest);
+  }
+
+  @PostMapping("/websites/{id}/children")
+  @ResponseBody
+  public ResponseList createChildren(@PathVariable Long id,
+      @RequestBody @Valid final RuleRequest ruleRequest) throws NotFoundException, IOException {
+    System.out.println("Creating target website.");
+    return websiteService.createChildren(id, ruleRequest);
   }
 
   @PutMapping("/websites/{id}")
@@ -121,4 +135,14 @@ public class WebsiteController {
     System.out.println("Getting feeds by websites.");
     return feedService.findAllByWebsiteId(id);
   }
+/*
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(Exception.class)
+  ErrorResponse handleUncaughtException(final Exception exception) {
+    //LOG.error(UNCAUGHT_EXCEPTION_TEMPLATE_STRING, exception, exception);
+    final ErrorResponse errorResponse = errorResponseBuilder.build(Error.SOMETHING_WRONG, Error.Source.PAYMENTS);
+    //LOG.debug(ERROR_RESPONSE_TEMPLATE_STRING, errorResponse);
+    return errorResponse;
+  }
+ */
 }

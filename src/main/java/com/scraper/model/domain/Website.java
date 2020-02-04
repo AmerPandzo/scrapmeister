@@ -114,4 +114,69 @@ public class Website implements Serializable {
   public void setUpdatedAt(final LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
+
+  public static final class WebsiteBuilder {
+    private Long id;
+    private String url;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Website parent;
+    private Collection<Website> children;
+    private Set<Rule> rules = new HashSet<>();
+
+    private WebsiteBuilder() {
+    }
+
+    public static WebsiteBuilder aWebsite() {
+      return new WebsiteBuilder();
+    }
+
+    public WebsiteBuilder setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public WebsiteBuilder setUrl(String url) {
+      this.url = url;
+      return this;
+    }
+
+    public WebsiteBuilder setCreatedAt(LocalDateTime createdAt) {
+      this.createdAt = createdAt;
+      return this;
+    }
+
+    public WebsiteBuilder setUpdatedAt(LocalDateTime updatedAt) {
+      this.updatedAt = updatedAt;
+      return this;
+    }
+
+    public WebsiteBuilder setParent(Website parent) {
+      this.parent = parent;
+      return this;
+    }
+
+    public WebsiteBuilder setChildren(Collection<Website> children) {
+      this.children = children;
+      return this;
+    }
+
+    public WebsiteBuilder setRules(Set<Rule> rules) {
+      this.rules = rules;
+      return this;
+    }
+
+    public Website build() {
+      Website website = new Website();
+      website.setId(id);
+      website.setUrl(url);
+      website.setCreatedAt(createdAt);
+      website.setUpdatedAt(updatedAt);
+      website.setParent(parent);
+      website.setChildren(children);
+      website.setRules(rules);
+      return website;
+    }
+  }
+
 }
