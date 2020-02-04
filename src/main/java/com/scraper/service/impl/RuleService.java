@@ -45,4 +45,10 @@ public class RuleService implements IRuleService {
     rule.setContent(newRule.getContent());
     return WebsiteMapper.fromRuleToRuleResponse(ruleRepository.save(rule));
   }
+
+  @Override
+  public Response findByWebsiteId(final Long websiteId) {
+    final List<Rule> maybeRule = ruleRepository.findByWebsiteId(websiteId);
+    return WebsiteMapper.fromRuleToRuleResponse(maybeRule.get(0));
+  }
 }

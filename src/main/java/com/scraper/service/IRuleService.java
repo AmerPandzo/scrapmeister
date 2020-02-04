@@ -14,4 +14,6 @@ public interface IRuleService {
   Rule create(Rule rule);
 
   Response update(RuleRequest ruleRequest) throws NotFoundException;
+
+  Response findByWebsiteId(Long websiteId);
 }
