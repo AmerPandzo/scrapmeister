@@ -2,6 +2,7 @@ package com.scraper.service.impl;
 
 import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Website;
+import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
@@ -10,10 +11,14 @@ import com.scraper.repository.RuleRepository;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IWebsiteService;
 import javassist.NotFoundException;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -24,11 +29,13 @@ public class WebsiteService implements IWebsiteService {
 
   private WebsiteRepository websiteRepository;
   private RuleRepository ruleRepository;
+  private ScrapService scrapService;
 
   @Autowired
-  public WebsiteService(WebsiteRepository websiteRepository, RuleRepository ruleRepository) {
+  public WebsiteService(WebsiteRepository websiteRepository, RuleRepository ruleRepository, ScrapService scrapService) {
     this.websiteRepository = websiteRepository;
     this.ruleRepository = ruleRepository;
+    this.scrapService = scrapService;
   }
 
   public ResponseList findAll() {
@@ -77,6 +84,24 @@ public class WebsiteService implements IWebsiteService {
     final Website savedWebsite = websiteRepository.save(website);
     final WebsiteResponse websiteResponse = WebsiteMapper.fromWebsiteToWebsiteResponse(savedWebsite);
     return websiteResponse;
+  }
+
+  public ResponseList createChildren(Long id, RuleRequest ruleRequest) throws NotFoundException, IOException {
+    //id - is id of parent page
+    //1. find parent page
+    final Optional<Website> maybeParent = websiteRepository.findById(id);
+    if (!maybeParent.isPresent()) throw new NotFoundException("Website not found.");
+    //2. based on that rule "scrap" that page element
+    final Elements elements = scrapService.processWebsiteChildren(maybeParent.get());
+    //4. based on that element and fetched rule create children websites
+    List<Website> websites = new ArrayList<>();
+    for (Element element : elements) {
+      final Website website = scrapService.saveWebsiteChildren(element, maybeParent.get(), WebsiteMapper.fromRuleRequestToRule(ruleRequest));
+      websites.add(website);
+    }
+    //5. return children websites
+    //6. in scrap controller create route to scrap websites by ids - next step
+    return WebsiteMapper.fromWebsitesToWebsiteResponseList(websites);
   }
 
   public Response update(Long id, WebsiteRequest newWebsite) throws NotFoundException {
