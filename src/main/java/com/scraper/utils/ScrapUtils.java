@@ -1,4 +1,4 @@
-package com.scraper;
+package com.scraper.utils;
 
 public class ScrapUtils {
 

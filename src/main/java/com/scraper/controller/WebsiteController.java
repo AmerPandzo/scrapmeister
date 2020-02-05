@@ -1,11 +1,11 @@
 package com.scraper.controller;
 
+import com.scraper.facade.WebsiteFacade;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
-import com.scraper.service.error.ErrorResponseBuilder;
 import com.scraper.service.impl.FeedService;
 import com.scraper.service.impl.RuleService;
 import com.scraper.service.impl.WebsiteService;
@@ -35,17 +35,17 @@ public class WebsiteController {
 
   private FeedService feedService;
 
-  private ErrorResponseBuilder errorResponseBuilder;
+  private WebsiteFacade websiteFacade;
 
   @Autowired
   public WebsiteController(WebsiteService websiteService,
       RuleService ruleService,
       FeedService feedService,
-      ErrorResponseBuilder errorResponseBuilder) {
+      WebsiteFacade websiteFacade) {
     this.websiteService = websiteService;
     this.ruleService = ruleService;
     this.feedService = feedService;
-    this.errorResponseBuilder = errorResponseBuilder;
+    this.websiteFacade = websiteFacade;
   }
 
   @PostMapping("/websites")
@@ -102,6 +102,19 @@ public class WebsiteController {
   public Response findById(@PathVariable Long id) {
     System.out.println("Getting target websites.");
     return websiteService.findById(id);
+  }
+
+  @GetMapping("/website/scrap/{id}")
+  @ResponseBody
+  public String scrapChildren(@PathVariable Long id) throws IOException {
+    System.out.println("Scrap and save.");
+    return websiteFacade.scrapChildren(id);
+  }
+
+  @GetMapping("/websites/{id}/children")
+  public ResponseList findChildrenById(@PathVariable Long id) {
+    System.out.println("Getting target websites.");
+    return websiteService.findChildrenById(id);
   }
 
   @DeleteMapping("/websites/{id}")

@@ -61,6 +61,20 @@ public class WebsiteService implements IWebsiteService {
     }
   }
 
+  public ResponseList findChildrenById(Long id) {
+    final Optional<Website> optionalWebsite = websiteRepository.findById(id);
+    ResponseList<Website> websiteResponses = new ResponseList<>();
+    if (optionalWebsite.isPresent()) {
+      websiteResponses.setStatus(HttpStatus.OK);
+      websiteResponses.setMessage("Fetched successfully.");
+      websiteResponses.setPlainResponses(new ArrayList<>(optionalWebsite.get().getChildren()));
+    } else {
+      websiteResponses.setMessage("Not found.");
+      websiteResponses.setStatus(HttpStatus.NOT_FOUND);
+    }
+    return websiteResponses;
+  }
+
   public void deleteById(Long id) {
     websiteRepository.deleteById(id);
   }
@@ -96,6 +110,8 @@ public class WebsiteService implements IWebsiteService {
     //4. based on that element and fetched rule create children websites
     List<Website> websites = new ArrayList<>();
     for (Element element : elements) {
+      // maybe if all rule parameters already exist fetch that one from db
+      // idea, because maybe then Set will prevent insert of multiple same rules
       final Website website = scrapService.saveWebsiteChildren(element, maybeParent.get(), WebsiteMapper.fromRuleRequestToRule(ruleRequest));
       websites.add(website);
     }

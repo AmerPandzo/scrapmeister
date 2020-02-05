@@ -24,4 +24,6 @@ public interface IWebsiteService {
   Response update(Long id, WebsiteRequest websiteRequest) throws NotFoundException;
 
   ResponseList createChildren(Long id, RuleRequest ruleRequest) throws NotFoundException, IOException;
+
+  ResponseList findChildrenById(Long id);
 }

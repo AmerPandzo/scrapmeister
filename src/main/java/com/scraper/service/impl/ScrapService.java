@@ -1,6 +1,6 @@
 package com.scraper.service.impl;
 
-import com.scraper.ScrapUtils;
+import com.scraper.utils.ScrapUtils;
 import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
@@ -48,8 +48,7 @@ public class ScrapService implements IScrapService {
     return WebsiteMapper.fromFeedToWebsiteResponseList(feedRepository.findAllByWebsiteId(id));
   }
 
-  public String scrapAndSave() throws IOException {
-    List<Website> websites = websiteRepository.findAll();
+  public String scrapAndSave(List<Website> websites) throws IOException {
     System.out.println("Number of websites scraped: " + websites.size());
     entriesCleanup();
     processWebsitesScrapping(websites);
@@ -63,6 +62,7 @@ public class ScrapService implements IScrapService {
   }
 
   private void processWebsiteScrapping(Website website) throws IOException {
+    notEmpty(website.getUrl());
     Document doc = Jsoup.connect(website.getUrl()).get();
     String websiteTitle = doc.title();
     System.out.println(websiteTitle);
@@ -71,6 +71,7 @@ public class ScrapService implements IScrapService {
   }
 
   public Elements processWebsiteChildren(Website website) throws IOException {
+    notEmpty(website.getUrl());
     Document doc = Jsoup.connect(website.getUrl()).get();
     String websiteTitle = doc.title();
     System.out.println(websiteTitle);
@@ -120,6 +121,11 @@ public class ScrapService implements IScrapService {
             .setWebsite(website)
             .setCratedAt(LocalDateTime.now())
             .build());
+  }
+
+  public static void notEmpty(String string) {
+    if (string == null || string.length() == 0)
+      throw new IllegalArgumentException("String must not be empty");
   }
 
 }

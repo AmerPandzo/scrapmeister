@@ -17,13 +17,6 @@ public class ScrapController {
   @Autowired
   private ScrapService scrapService;
 
-  @GetMapping("/scrap")
-  @ResponseBody
-  public String scrap() throws IOException {
-    System.out.println("Scrap and save.");
-    return scrapService.scrapAndSave();
-  }
-
   @GetMapping("/scrap/{id}")
   @ResponseBody
   public ResponseList scrapOneAndSave(@PathVariable Long id) throws IOException, NotFoundException {
