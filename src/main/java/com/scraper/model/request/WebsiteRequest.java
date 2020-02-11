@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class WebsiteRequest {
 
+  private String title;
   private String url;
   private Long parentId;
   private List<RuleRequest> rules;
@@ -35,6 +36,14 @@ public class WebsiteRequest {
 
   public void setParentId(final Long parentId) {
     this.parentId = parentId;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   @Override

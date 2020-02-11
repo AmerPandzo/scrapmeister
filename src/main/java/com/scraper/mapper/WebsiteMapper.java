@@ -28,6 +28,7 @@ public final class WebsiteMapper {
   public static Website fromWebsiteRequestToWebsite(final WebsiteRequest websiteRequest) {
     final LocalDateTime cratedAt = LocalDateTime.now();
     Website website = new Website();
+    website.setTitle(websiteRequest.getTitle());
     website.setUrl(websiteRequest.getUrl());
     website.setCreatedAt(cratedAt);
     website.setUpdatedAt(cratedAt);
@@ -74,6 +75,7 @@ public final class WebsiteMapper {
 
   public static WebsiteResponse fromWebsiteToWebsiteResponse(final Website website) {
     WebsiteResponse websiteResponse = new WebsiteResponse();
+    websiteResponse.setTitle(website.getTitle());
     websiteResponse.setUrl(website.getUrl());
     websiteResponse.setRules(website.getRules());
     websiteResponse.setCreatedAt(website.getCreatedAt());
@@ -87,6 +89,7 @@ public final class WebsiteMapper {
 
   public static PlainWebsiteResponse fromWebsiteToPlainWebsiteResponse(final Website website) {
     PlainWebsiteResponse websiteResponse = new PlainWebsiteResponse();
+    websiteResponse.setTitle(website.getTitle());
     websiteResponse.setUrl(website.getUrl());
     websiteResponse.setRules(website.getRules());
     websiteResponse.setCreatedAt(website.getCreatedAt());

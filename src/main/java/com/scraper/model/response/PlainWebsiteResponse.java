@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class PlainWebsiteResponse {
 
+  private String title;
   private String url;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -61,5 +62,13 @@ public class PlainWebsiteResponse {
 
   public void setRules(final Set<Rule> rules) {
     this.rules = rules;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }

@@ -33,6 +33,8 @@ public class Website implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  private String title;
+
   private String url;
 
   private LocalDateTime createdAt;
@@ -113,6 +115,14 @@ public class Website implements Serializable {
 
   public void setUpdatedAt(final LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public static final class WebsiteBuilder {
