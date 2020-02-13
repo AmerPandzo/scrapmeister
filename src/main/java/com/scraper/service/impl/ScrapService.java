@@ -1,6 +1,5 @@
 package com.scraper.service.impl;
 
-import com.scraper.utils.ScrapUtils;
 import com.scraper.mapper.WebsiteMapper;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.domain.Rule;
@@ -9,6 +8,7 @@ import com.scraper.model.response.ResponseList;
 import com.scraper.repository.FeedRepository;
 import com.scraper.repository.WebsiteRepository;
 import com.scraper.service.IScrapService;
+import com.scraper.utils.ScrapUtils;
 import javassist.NotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,7 +62,7 @@ public class ScrapService implements IScrapService {
   }
 
   private void processWebsiteScrapping(Website website) throws IOException {
-    notEmpty(website.getUrl());
+    notEmptyUrl(website.getUrl());
     Document doc = Jsoup.connect(website.getUrl()).get();
     String websiteTitle = doc.title();
     System.out.println(websiteTitle);
@@ -71,14 +71,14 @@ public class ScrapService implements IScrapService {
   }
 
   public Elements processWebsiteChildren(Website website) throws IOException {
-    notEmpty(website.getUrl());
+    notEmptyUrl(website.getUrl());
     Document doc = Jsoup.connect(website.getUrl()).get();
     String websiteTitle = doc.title();
     System.out.println(websiteTitle);
     return doc.select(website.getRules().stream().findFirst().get().getNewsContainer());
   }
 
-  public Website saveWebsiteChildren(Element element, Website website, Rule childrenRule) throws IOException {
+  public Website saveWebsiteChildren(Element element, Website website, Rule childrenRule) {
     Rule rule = website.getRules().stream().findFirst().get();
     Set<Rule> rules = new HashSet<>();
     rules.add(childrenRule);
@@ -86,7 +86,7 @@ public class ScrapService implements IScrapService {
         Website.WebsiteBuilder.aWebsite()
             .setCreatedAt(LocalDateTime.now())
             .setParent(website)
-            .setUpdatedAt(LocalDateTime.now()            )
+            .setUpdatedAt(LocalDateTime.now())
             .setUrl(element.select(rule.getLink()).attr("abs:href"))
             .setRules(rules)
             .build());
@@ -123,9 +123,9 @@ public class ScrapService implements IScrapService {
             .build());
   }
 
-  public static void notEmpty(String string) {
-    if (string == null || string.length() == 0)
-      throw new IllegalArgumentException("String must not be empty");
+  public static void notEmptyUrl(String url) {
+    if (url == null || url.length() == 0)
+      throw new IllegalArgumentException("URL must not be empty");
   }
 
 }

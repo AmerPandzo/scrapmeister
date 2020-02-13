@@ -61,7 +61,7 @@ public class WebsiteController {
   public ResponseList createChildren(@PathVariable Long id,
       @RequestBody @Valid final RuleRequest ruleRequest) throws NotFoundException, IOException {
     System.out.println("Creating target website.");
-    return websiteService.createChildren(id, ruleRequest);
+    return websiteFacade.createChildren(id, ruleRequest);
   }
 
   @PutMapping("/websites/{id}")
@@ -102,6 +102,13 @@ public class WebsiteController {
   public Response findById(@PathVariable Long id) {
     System.out.println("Getting target websites.");
     return websiteService.findById(id);
+  }
+
+  @GetMapping("/scrap")
+  @ResponseBody
+  public String scrap() throws IOException {
+    System.out.println("Scrap and save.");
+    return websiteFacade.scrap();
   }
 
   @GetMapping("/website/scrap/{id}")
@@ -148,14 +155,4 @@ public class WebsiteController {
     System.out.println("Getting feeds by websites.");
     return feedService.findAllByWebsiteId(id);
   }
-/*
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
-  ErrorResponse handleUncaughtException(final Exception exception) {
-    //LOG.error(UNCAUGHT_EXCEPTION_TEMPLATE_STRING, exception, exception);
-    final ErrorResponse errorResponse = errorResponseBuilder.build(Error.SOMETHING_WRONG, Error.Source.PAYMENTS);
-    //LOG.debug(ERROR_RESPONSE_TEMPLATE_STRING, errorResponse);
-    return errorResponse;
-  }
- */
 }

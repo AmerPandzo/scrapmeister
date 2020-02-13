@@ -1,12 +1,10 @@
 package com.scraper.service;
 
-import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
 import javassist.NotFoundException;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IWebsiteService {
@@ -22,8 +20,6 @@ public interface IWebsiteService {
   Response create(WebsiteRequest websiteRequest);
 
   Response update(Long id, WebsiteRequest websiteRequest) throws NotFoundException;
-
-  ResponseList createChildren(Long id, RuleRequest ruleRequest) throws NotFoundException, IOException;
 
   ResponseList findChildrenById(Long id);
 }
