@@ -6,7 +6,9 @@ plugins {
 
 group = 'com.scrapper'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+apply plugin: 'java'
+sourceCompatibility = 13
+targetCompatibility = 13
 
 configurations {
 	compileOnly {
