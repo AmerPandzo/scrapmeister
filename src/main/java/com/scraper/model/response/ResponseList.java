@@ -8,6 +8,7 @@ public class ResponseList<R> implements Response {
 
   private HttpStatus status;
   private String message;
+  private int count;
   private List<R> plainResponses;
 
   public HttpStatus getStatus() {
@@ -32,5 +33,13 @@ public class ResponseList<R> implements Response {
 
   public void setPlainResponses(final List<R> plainResponses) {
     this.plainResponses = plainResponses;
+  }
+
+  public int getCount() {
+    return count;
+  }
+
+  public void setCount(final int count) {
+    this.count = count;
   }
 }

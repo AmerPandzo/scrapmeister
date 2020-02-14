@@ -45,7 +45,7 @@ public class ScrapService implements IScrapService {
     }
     entriesCleanupForOne(id);
     processWebsiteScrapping(maybeSite.get());
-    return WebsiteMapper.fromFeedToWebsiteResponseList(feedRepository.findAllByWebsiteId(id));
+    return WebsiteMapper.fromFeedToFeedResponseList(feedRepository.findAllByWebsiteId(id));
   }
 
   public String scrapAndSave(List<Website> websites) throws IOException {

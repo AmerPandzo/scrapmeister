@@ -2,6 +2,7 @@ package com.scraper.service;
 
 import com.scraper.model.domain.Feed;
 import com.scraper.model.request.FeedRequest;
+import com.scraper.model.response.PlainFeedResponse;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
 
@@ -13,7 +14,7 @@ public interface IFeedService {
 
   List<Feed> findAll();
 
-  ResponseList findAllByWebsiteId(Long websiteId);
+  ResponseList<PlainFeedResponse> findAllByWebsiteId(Long websiteId);
 
   Optional<Feed> findByIdAndWebsiteId(Long id, Long websiteId);
 
@@ -22,4 +23,6 @@ public interface IFeedService {
   void deleteAllByWebsiteId(Long websiteId);
 
   void deleteAll();
+
+  ResponseList<PlainFeedResponse> findAllByParentId(final Long parentId);
 }

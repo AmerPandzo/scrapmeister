@@ -101,7 +101,7 @@ public final class WebsiteMapper {
     return websiteResponse;
   }
 
-  public static PlainFeedResponse fromFeedToFeedResponse(final Feed feed) {
+  public static PlainFeedResponse fromFeedToPlainFeedResponse(final Feed feed) {
     PlainFeedResponse plainFeedResponse = new PlainFeedResponse();
     plainFeedResponse.setUrl(feed.getUrl());
     plainFeedResponse.setAuthor(feed.getAuthor());
@@ -124,22 +124,23 @@ public final class WebsiteMapper {
     return feed;
   }
 
-  public static ResponseList fromWebsitesToWebsiteResponseList(final List<Website> websites) {
+  public static ResponseList<PlainWebsiteResponse> fromWebsitesToWebsiteResponseList(final List<Website> websites) {
     List<PlainWebsiteResponse> websiteResponses = new ArrayList<>();
     websites.forEach(website -> websiteResponses.add(fromWebsiteToPlainWebsiteResponse(website)));
-    ResponseList responseList = new ResponseList();
+    ResponseList<PlainWebsiteResponse> responseList = new ResponseList();
     responseList.setMessage("Successfully fetched list.");
     responseList.setStatus(HttpStatus.OK);
     responseList.setPlainResponses(websiteResponses);
     return responseList;
   }
 
-  public static ResponseList fromFeedToWebsiteResponseList(final List<Feed> feeds) {
+  public static ResponseList<PlainFeedResponse> fromFeedToFeedResponseList(final List<Feed> feeds) {
     List<PlainFeedResponse> websiteResponses = new ArrayList<>();
-    feeds.forEach(feed -> websiteResponses.add(fromFeedToFeedResponse(feed)));
-    ResponseList responseList = new ResponseList();
+    feeds.forEach(feed -> websiteResponses.add(fromFeedToPlainFeedResponse(feed)));
+    ResponseList<PlainFeedResponse> responseList = new ResponseList();
     responseList.setMessage("Successfully fetched list.");
     responseList.setStatus(HttpStatus.OK);
+    responseList.setCount(websiteResponses.size());
     responseList.setPlainResponses(websiteResponses);
     return responseList;
   }

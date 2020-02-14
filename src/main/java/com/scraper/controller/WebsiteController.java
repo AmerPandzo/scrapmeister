@@ -4,6 +4,7 @@ import com.scraper.facade.WebsiteFacade;
 import com.scraper.model.domain.Feed;
 import com.scraper.model.request.RuleRequest;
 import com.scraper.model.request.WebsiteRequest;
+import com.scraper.model.response.PlainFeedResponse;
 import com.scraper.model.response.Response;
 import com.scraper.model.response.ResponseList;
 import com.scraper.service.impl.FeedService;
@@ -151,8 +152,14 @@ public class WebsiteController {
   }
 
   @GetMapping("/websites/{id}/feeds")
-  public ResponseList getFeedsById(@PathVariable Long id) {
+  public ResponseList<PlainFeedResponse> getFeedsById(@PathVariable Long id) {
     System.out.println("Getting feeds by websites.");
     return feedService.findAllByWebsiteId(id);
+  }
+
+  @GetMapping("/websites/{parentId}/parent/feeds")
+  public ResponseList<PlainFeedResponse> getFeedsByParentId(@PathVariable Long parentId) {
+    System.out.println("Getting feeds by parent websites.");
+    return feedService.findAllByParentId(parentId);
   }
 }
