@@ -7,7 +7,7 @@
 * Git / GitHub
 * Heroku 
 --------------------------
-On frontend (https://github.com/mulahasanovic/scrapmeister-frontend) `Angular2`.
+On frontend (`Angular2`).
 ## Release 1
 
 ### Release 1 should contain/implement the following features (in no particular order):
